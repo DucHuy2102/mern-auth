@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js';
+import { sendVerificationEmail } from '../mailtrap/emails.js';
 
 // sign-up route
 export const signUp = async (req, res) => {
@@ -37,6 +38,9 @@ export const signUp = async (req, res) => {
 
         // jwt token
         generateTokenAndSetCookie(res, res._id);
+
+        // send verification email
+        await sendVerificationEmail(savedUser.email, savedUser.name, verificationToken);
 
         const { password: pass, ...rest } = savedUser._doc;
         res.status(201).json({
