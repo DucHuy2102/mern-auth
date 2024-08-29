@@ -55,12 +55,51 @@ export const signUp = async (req, res) => {
 
 // sign-in route
 export const signIn = async (req, res) => {
-    res.send('Sign in route');
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        // Check if user exists
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'User not found!' });
+        }
+
+        // Check if user is verified
+        if (!user.isVerified) {
+            return res.status(400).json({ success: false, message: 'Please verify your email!' });
+        }
+
+        // Check if password is correct
+        const passwordValid = await bcryptjs.compare(password, user.password);
+        if (!passwordValid) {
+            return res.status(400).json({ success: false, message: 'Wrong password!' });
+        }
+
+        // jwt token
+        generateTokenAndSetCookie(res, user._id);
+
+        // Update last login
+        user.lastLogin = new Date();
+
+        // Save user to db and send response
+        await user.save();
+        const { password: pass, ...rest } = user._doc;
+        res.status(200).json({
+            success: true,
+            message: 'Sign in successfully',
+            user: rest,
+        });
+    } catch (error) {
+        console.log('Error SignIn BE:', error);
+        res.status(500).json({ success: false, message: 'Error SignIn BE' });
+    }
 };
 
 // log-out route
 export const logOut = async (req, res) => {
-    res.send('Log out route');
+    res.clearCookie('token');
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
 // verify email route
