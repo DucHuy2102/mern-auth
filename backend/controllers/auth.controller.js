@@ -3,6 +3,7 @@ import bcryptjs from 'bcryptjs';
 import crypto from 'crypto';
 import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js';
 import {
+    sendPasswordResetConfirmationEmail,
     sendPasswordResetEmail,
     sendVerificationEmail,
     sendWelcomeEmail,
@@ -167,5 +168,41 @@ export const forgotPassword = async (req, res) => {
     } catch (error) {
         console.log('Error Forgot Password BE:', error);
         res.status(500).json({ success: false, message: 'Error Forgot Password BE' });
+    }
+};
+
+// reset password route
+export const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpiresAt: { $gt: Date.now() },
+        });
+
+        // Check if user exists
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'User not found!' });
+        }
+
+        // hash password
+        const hashedPassword = await bcryptjs.hash(password, 10);
+
+        // Update user password and remove reset token
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpiresAt = undefined;
+        await user.save();
+
+        // send password reset confirmation email
+        await sendPasswordResetConfirmationEmail(user.email, user.name);
+
+        // Send response
+        res.status(200).json({ success: true, message: 'Password reset successfully' });
+    } catch (error) {
+        console.log('Error Reset Password BE:', error);
+        res.status(500).json({ success: false, message: 'Error Reset Password BE' });
     }
 };
