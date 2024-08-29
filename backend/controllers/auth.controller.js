@@ -104,8 +104,13 @@ export const signIn = async (req, res) => {
 
 // log-out route
 export const logOut = async (req, res) => {
-    res.clearCookie('token');
-    res.status(200).json({ success: true, message: 'Logged out successfully' });
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(400).json({ success: false, message: 'User not logged in' });
+    } else {
+        res.clearCookie('token');
+        res.status(200).json({ success: true, message: 'Logged out successfully' });
+    }
 };
 
 // verify email route
@@ -204,5 +209,19 @@ export const resetPassword = async (req, res) => {
     } catch (error) {
         console.log('Error Reset Password BE:', error);
         res.status(500).json({ success: false, message: 'Error Reset Password BE' });
+    }
+};
+
+// check authentification route
+export const checkAuth = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'User not found!!!' });
+        }
+        res.status(200).json({ success: true, user });
+    } catch (error) {
+        console.log('Error Check Auth BE:', error);
+        res.status(500).json({ success: false, message: 'Error Check Auth BE' });
     }
 };
