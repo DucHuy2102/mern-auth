@@ -1,5 +1,11 @@
 import express from 'express';
-import { logOut, signIn, signUp, verifyEmail } from '../controllers/auth.controller.js';
+import {
+    forgotPassword,
+    logOut,
+    signIn,
+    signUp,
+    verifyEmail,
+} from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
@@ -14,5 +20,8 @@ router.post('/log-out', logOut);
 
 // veryfy-email route
 router.post('/verify-email', verifyEmail);
+
+// forgot-password route
+router.post('/forgot-password', forgotPassword);
 
 export default router;
