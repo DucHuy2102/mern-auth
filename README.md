@@ -1,15 +1,15 @@
 
-# MERN Full Stack 
+# MERN Full Stack - [Authentication Advance](https://mern-auth-78x0.onrender.com)
 
 This is an authentication project using the MERN Stack, where users can log in with email and password or via Google. It also includes features for password recovery and reset.
 
-**Link demo:** [mern-auth]()
+**Link demo:** [mern-auth](https://mern-auth-78x0.onrender.com)
 
 
 
 ## Tech Stack
 
-- **Client:** React, TailwindCSS
+- **Client:** React, TailwindCSS, Zustand, Lucide Icon
 - **Server:** Node, Express, MongoDB
 
 
