@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowBigLeft, Loader, Lock, Mail } from 'lucide-react';
+import { House, Loader, Lock, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input_Component } from '../components/exportComponent';
@@ -14,7 +14,7 @@ export default function SignIn() {
         email: '',
         password: '',
     });
-    // console.log(formData);
+    console.log('Login', formData);
     const handleChangeInput = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
@@ -52,7 +52,7 @@ export default function SignIn() {
             <div className='p-8'>
                 <div className='relative'>
                     <Link className='absolute top-2' to={'/'}>
-                        <ArrowBigLeft className='text-emerald-500 cursor-pointer' size={25} />
+                        <House className='text-emerald-500 cursor-pointer' size={25} />
                     </Link>
                     <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>
                         Create Account

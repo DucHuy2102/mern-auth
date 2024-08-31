@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input_Component, PasswordStrengthMeter } from '../components/exportComponent';
-import { ArrowBigLeft, Loader, Lock, Mail, User } from 'lucide-react';
+import { House, Loader, Lock, Mail, User } from 'lucide-react';
 
 export default function SignUp() {
     // state
@@ -61,7 +61,7 @@ export default function SignUp() {
             <div className='p-8'>
                 <div className='relative'>
                     <Link className='absolute top-2' to={'/'}>
-                        <ArrowBigLeft className='text-emerald-500 cursor-pointer' size={25} />
+                        <House className='text-emerald-500 cursor-pointer' size={25} />
                     </Link>
                     <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>
                         Create Account

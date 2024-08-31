@@ -1,6 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FloatingShape } from './components/exportComponent';
-import { SignUp_Page, SignIn_Page, Dashboard_Page } from './pages/exportPage';
+import {
+    SignUp_Page,
+    SignIn_Page,
+    Dashboard_Page,
+    ForgotPassword_Page,
+    EmailVerification_Page,
+    ResetPassword_Page,
+} from './pages/exportPage';
 
 export default function App() {
     return (
@@ -18,6 +25,9 @@ export default function App() {
                     <Route path='/' element={<Dashboard_Page />} />
                     <Route path='/sign-up' element={<SignUp_Page />} />
                     <Route path='/sign-in' element={<SignIn_Page />} />
+                    <Route path='/forgot-password' element={<ForgotPassword_Page />} />
+                    <Route path='/verify-email' element={<EmailVerification_Page />} />
+                    <Route path='/reset-password/:token' element={<ResetPassword_Page />} />
                 </Routes>
             </Router>
         </div>
