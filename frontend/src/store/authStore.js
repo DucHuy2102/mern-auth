@@ -30,4 +30,33 @@ export const useAuthStore = create((set) => ({
             console.log(error);
         }
     },
+
+    login: async (formData) => {
+        const { email, password } = formData;
+        try {
+            const res = await axios.post(`${API_URL}/sign-in`, { email, password });
+            set({ user: res.data.user, isAuthenticated: true });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    checkAuth: async () => {
+        set({ isCheckingAuth: true });
+        try {
+            const res = await axios.get(`${API_URL}/check-auth`);
+            set({ user: res.data.user, isAuthenticated: true });
+        } catch (error) {
+            set({ isCheckingAuth: false });
+        }
+    },
+
+    logout: async () => {
+        try {
+            await axios.post(`${API_URL}/log-out`);
+            set({ user: null, isAuthenticated: false });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }));

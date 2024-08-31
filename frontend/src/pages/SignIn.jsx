@@ -1,26 +1,29 @@
 import { motion } from 'framer-motion';
 import { House, Loader, Lock, Mail } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input_Component } from '../components/exportComponent';
+import { useAuthStore } from '../store/authStore';
 
 export default function SignIn() {
     // state
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { login } = useAuthStore();
+    const navigate = useNavigate();
 
     // form state
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    console.log('Login', formData);
+
     const handleChangeInput = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
 
     // handle login function
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (formData.email === '' || formData.password === '') {
             setError('All fields are required');
@@ -31,8 +34,8 @@ export default function SignIn() {
         }
         try {
             setError(null);
-            setFormData({ email: '', password: '' });
-            console.log(formData);
+            setIsLoading(true);
+            await login(formData);
         } catch (error) {
             console.log(error);
             setError('Failed to login');
@@ -55,7 +58,7 @@ export default function SignIn() {
                         <House className='text-emerald-500 cursor-pointer' size={25} />
                     </Link>
                     <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>
-                        Create Account
+                        Welcome Back
                     </h2>
                 </div>
 
