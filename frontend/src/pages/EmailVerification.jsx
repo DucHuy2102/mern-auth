@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { CloudHail, House } from 'lucide-react';
+import { House } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
+import { toast } from 'react-toastify';
 
 export default function EmailVerification() {
     // states
@@ -9,6 +11,7 @@ export default function EmailVerification() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { verifyEmail } = useAuthStore();
 
     // input refs
     const inputRefs = useRef([]);
@@ -49,10 +52,18 @@ export default function EmailVerification() {
         e.preventDefault();
         const verificationCode = code.join('');
         try {
+            setIsLoading(true);
+            await verifyEmail(verificationCode);
+            toast.success('Email verified successfully');
             navigate('/');
-            setCode(['', '', '', '', '', '']);
         } catch (error) {
+            setError('Invalid verification code');
             console.log(error);
+            setTimeout(() => {
+                setError(null);
+            }, 3000);
+        } finally {
+            setIsLoading(false);
         }
     };
 

@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input_Component, PasswordStrengthMeter } from '../components/exportComponent';
 import { House, Loader, Lock, Mail, User } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
 
 export default function SignUp() {
     // state
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { signUp } = useAuthStore();
+    const navigate = useNavigate();
 
     // form data
     const [formData, setFormData] = useState({
@@ -22,7 +25,7 @@ export default function SignUp() {
     };
 
     // handle sign up
-    const handleSignUp = (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         if (formData.name === '' || formData.email === '' || formData.password === '') {
             setError('All fields are required');
@@ -40,11 +43,14 @@ export default function SignUp() {
         }
         try {
             setError(null);
-            setFormData({ name: '', email: '', password: '' });
-            console.log(formData);
+            await signUp(formData);
+            navigate('/verify-email');
         } catch (error) {
             console.log(error);
             setError('Failed to create account');
+            setTimeout(() => {
+                setError(null);
+            }, 5000);
         } finally {
             setIsLoading(false);
         }

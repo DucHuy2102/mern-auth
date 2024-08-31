@@ -8,6 +8,8 @@ import {
     EmailVerification_Page,
     ResetPassword_Page,
 } from './pages/exportPage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
     return (
@@ -30,6 +32,8 @@ export default function App() {
                     <Route path='/reset-password/:token' element={<ResetPassword_Page />} />
                 </Routes>
             </Router>
+
+            <ToastContainer />
         </div>
     );
 }
