@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Input_Component } from '../components/exportComponent';
-import { Link } from 'react-router-dom';
-import { House, Loader, Lock, Mail } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { House, Lock } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
+import { toast } from 'react-toastify';
 
 export default function ResetPassword() {
     // states
@@ -12,6 +14,9 @@ export default function ResetPassword() {
     });
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { resetPassword } = useAuthStore();
+    const { token } = useParams();
+    const navigate = useNavigate();
 
     // handle change input
     const handleChangeInput = (e) => {
@@ -34,6 +39,15 @@ export default function ResetPassword() {
                 setError(null);
             }, 5000);
             return;
+        }
+        try {
+            await resetPassword({ token, password: formData.password });
+            toast.success('Password reset successfully, redirecting to login page');
+            setTimeout(() => {
+                navigate('/sign-in');
+            }, 4000);
+        } catch (error) {
+            toast.error('Failed to reset password, please try later');
         }
     };
 

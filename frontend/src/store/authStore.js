@@ -59,4 +59,22 @@ export const useAuthStore = create((set) => ({
             console.log(error);
         }
     },
+
+    forgotPassword: async (email) => {
+        try {
+            const res = await axios.post(`${API_URL}/forgot-password`, { email });
+            set({ message: res.data.message });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    resetPassword: async ({ token, password }) => {
+        try {
+            const res = await axios.post(`${API_URL}/reset-password/${token}`, { password });
+            set({ message: res.data.message });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }));

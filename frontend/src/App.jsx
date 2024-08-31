@@ -76,9 +76,23 @@ export default function App() {
                             </RedirectUser>
                         }
                     />
-                    <Route path='/forgot-password' element={<ForgotPassword_Page />} />
                     <Route path='/verify-email' element={<EmailVerification_Page />} />
-                    <Route path='/reset-password/:token' element={<ResetPassword_Page />} />
+                    <Route
+                        path='/forgot-password'
+                        element={
+                            <RedirectUser>
+                                <ForgotPassword_Page />
+                            </RedirectUser>
+                        }
+                    />
+                    <Route
+                        path='/reset-password/:token'
+                        element={
+                            <RedirectUser>
+                                <ResetPassword_Page />
+                            </RedirectUser>
+                        }
+                    />
                 </Routes>
             </Router>
 

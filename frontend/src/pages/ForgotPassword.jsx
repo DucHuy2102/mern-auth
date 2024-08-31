@@ -3,6 +3,7 @@ import { Input_Component } from '../components/exportComponent';
 import { Link } from 'react-router-dom';
 import { House, Loader, Mail } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
 
 export default function ForgotPassword() {
     // states
@@ -10,6 +11,7 @@ export default function ForgotPassword() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const { forgotPassword } = useAuthStore();
 
     // handle submit function
     const handleSubmit = async (e) => {
@@ -21,6 +23,7 @@ export default function ForgotPassword() {
             }, 5000);
             return;
         }
+        await forgotPassword(email);
         setIsSubmitted(true);
     };
 
