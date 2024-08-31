@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { connectDb } from './database/connectDb.js';
 import authRoutes from './routes/auth.route.js';
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 dotenv.config();
@@ -23,3 +24,10 @@ app.listen(PORT, () => {
 });
 
 app.use('/api/auth', authRoutes);
+const __dirname = path.resolve();
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+    });
+}

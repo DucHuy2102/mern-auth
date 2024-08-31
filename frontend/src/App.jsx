@@ -93,6 +93,7 @@ export default function App() {
                             </RedirectUser>
                         }
                     />
+                    <Route path='*' element={<Navigate to='/' replace />} />
                 </Routes>
             </Router>
 
